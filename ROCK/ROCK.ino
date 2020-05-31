@@ -14,7 +14,7 @@
 SoftwareSerial mybt(8, 9);
 uint16_t value;
 byte pid; 
-int timeo = 100;
+int timeo = 10;
 int t_delay = 70;
 byte ble_header = 0xEA;
 byte ble_tail = 0xBB;
@@ -32,7 +32,7 @@ int B;
 int WorkingVal;
 String WorkingString="";
 int RefreshCounter=0; // when the reading should refresh
-int RefreshCounterMax=50; //Adjust this refreshrate
+int RefreshCounterMax=25; //Adjust this refreshrate
 int RESETMenuName=0;
 
 //MenuAnalogVal
@@ -86,24 +86,32 @@ void loop()
 //  Serial.println("02 IAT Temp        ");SentMessage = "01 0F";mySerial.println("01 0F");delay(t_delay);ReadData();delay(timeo);
 //  Serial.println("03 Ambient Temp    ");SentMessage = "01 46";mySerial.println("01 46");delay(t_delay);ReadData();delay(timeo);
   // 油門開度
-      Serial.println("04 Throttle %   ");
+      if(RefreshCounter < 15){
+        Serial.println("04 Throttle %   ");
       SentMessage = "01 11";Serial1.flush();Serial1.println("01 11");delay(t_delay);ReadData();delay(timeo);
-  
-  // 轉速
-      Serial.println("09 RPM             ");
+        Serial.println("09 RPM             ");
       SentMessage = "01 0C";Serial1.flush();Serial1.println("01 0C");delay(t_delay);ReadData();delay(timeo);
-
-  
-  // 車速
-
-      Serial.println("10 Vehicle Speed   ");
-      SentMessage = "01 0D";Serial1.flush();Serial1.println("01 0D");delay(t_delay);ReadData();delay(timeo);
-
-      Serial.println("11 Air Flow Rate  ");
+        }
+        else{
+          Serial.println("11 Air Flow Rate  ");
       SentMessage = "01 10";Serial1.flush();Serial1.println("01 10");delay(t_delay);ReadData();delay(timeo);
 
       Serial.println("12 Barometric     ");
       SentMessage = "01 33";Serial1.flush();Serial1.println("01 33");delay(t_delay);ReadData();delay(timeo);
+      RefreshCounter = 0;
+       }
+      
+  
+  // 轉速
+      
+
+  
+  // 車速
+
+//      Serial.println("10 Vehicle Speed   ");
+//      SentMessage = "01 0D";Serial1.flush();Serial1.println("01 0D");delay(t_delay);ReadData();delay(timeo);
+
+      
 
 
 
